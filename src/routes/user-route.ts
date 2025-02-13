@@ -6,8 +6,18 @@ import {
   register,
   updateUser,
 } from "../controllers/user-controller";
+import {
+  createProduct,
+  deleteProduct,
+  getAllProducts,
+  getProduct,
+  updateProduct,
+} from "../controllers/product-controller";
+import { addProductToBasket } from "../controllers/basket-controller";
 
 const userRoute = Router();
+const productRoute = Router();
+const basketRoute = Router();
 
 userRoute
   .post("/register", register)
@@ -16,4 +26,13 @@ userRoute
   .get("/profiles", getProfiles)
   .put("/profile/:id", updateUser);
 
-export { userRoute };
+productRoute
+  .post("/products", createProduct)
+  .get("/products", getAllProducts)
+  .get("/products/:id", getProduct)
+  .put("/products/:id", updateProduct)
+  .delete("/products/:id", deleteProduct);
+
+basketRoute.post("/basket/:id", addProductToBasket);
+
+export { userRoute, productRoute, basketRoute };
