@@ -3,38 +3,39 @@ import { products } from "../database/product-db";
 
 export const createProduct: RequestHandler = (req, res) => {
   const { name, description, price, stock, category, images } = req.body;
+  const product = products.find((product) => product.name === name);
+
+  if (product) {
+    product.stock += stock;
+    res.status(200).send("Added stock");
+    return;
+  }
 
   const lastProduct = products[products.length - 1];
   const newProductId = lastProduct ? lastProduct.id + 1 : 1;
 
-  const product = products.find((product) => product.name === name);
-  if (product) {
-    product.stock += stock;
-    return;
-  } else {
-    // res.send("haha");
-    const newProduct = {
-      id: newProductId,
-      name,
-      description,
-      price,
-      stock,
-      category,
-      images,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
+  // res.send("haha");
+  const newProduct = {
+    id: newProductId,
+    name,
+    description,
+    price,
+    stock,
+    category,
+    images,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
 
-    products.push(newProduct);
-    res.send("Created new product successfully");
-  }
+  products.push(newProduct);
+  res.status(201).send("Created new product successfully");
 };
 
 export const getAllProducts: RequestHandler = (req, res) => {
   if (products) {
-    res.send(products);
+    res.status(200).send(products);
   } else {
-    res.send("not found products");
+    res.status(404).send("not found products");
   }
 };
 
@@ -44,7 +45,7 @@ export const getProduct: RequestHandler = (req, res) => {
   if (!product) {
     res.status(404).send("Product not found");
   } else {
-    res.send(product);
+    res.status(200).send(product);
   }
 };
 
@@ -91,9 +92,9 @@ export const updateProduct: RequestHandler = (req, res) => {
   }
 
   if (isEdited) {
-    res.send("Product updated successfully");
+    res.status(200).send("Product updated successfully");
   } else {
-    res.send("There are no changes");
+    res.status(404).send("There are no changes");
   }
 };
 
@@ -108,5 +109,5 @@ export const deleteProduct: RequestHandler = (req, res) => {
     return;
   }
   products.splice(productIndex, 1);
-  res.send("Product deleted successfully");
+  res.status(200).send("Product deleted successfully");
 };

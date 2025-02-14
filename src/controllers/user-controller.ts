@@ -7,7 +7,7 @@ export const register: RequestHandler = (req, res) => {
 
   const findUserName = users.find((user) => user.name === name);
   if (findUserName) {
-    res.send("User name already taken ");
+    res.status(400).send("User name already taken ");
     return;
   }
   const findUser = users.find((user) => user.email === email);
@@ -32,7 +32,7 @@ export const register: RequestHandler = (req, res) => {
   };
 
   users.push(newUser);
-  res.send("User registred successfully");
+  res.status(201).send("User registred successfully");
   return;
 };
 
@@ -46,12 +46,12 @@ export const login: RequestHandler = (req, res) => {
   );
 
   if (findUserEmail) {
-    res.send("User logged in successfully");
+    res.status(200).send("User logged in successfully");
     return;
   }
 
   if (findUserName) {
-    res.send("User logged in successfully");
+    res.status(200).send("User logged in successfully");
     return;
   }
 
@@ -63,14 +63,14 @@ export const getProfile: RequestHandler = (req, res) => {
   const { id } = req.body;
   const findUserId = users.find((user) => user.id === id);
   if (findUserId) {
-    res.send(findUserId);
+    res.status(200).send(findUserId);
   } else {
-    res.send("user not found");
+    res.status(404).send("user not found");
   }
 };
 
 export const getProfiles: RequestHandler = (req, res) => {
-  res.send(users);
+  res.status(200).send(users);
 };
 
 export const updateUser: RequestHandler = (req, res) => {
@@ -78,7 +78,7 @@ export const updateUser: RequestHandler = (req, res) => {
   const { name, email, password, address, role } = req.body;
   const user = users.find((user) => user.id === userId);
   if (!user) {
-    res.send("User not found");
+    res.status(404).send("User not found");
     return;
   }
   let isEdited = false;
@@ -109,10 +109,10 @@ export const updateUser: RequestHandler = (req, res) => {
   }
 
   if (isEdited) {
-    res.send("Profile updated successfully");
+    res.status(200).send("Profile updated successfully");
     return;
   } else {
-    res.send("No changes were made");
+    res.status(400).send("No changes were made");
     return;
   }
 };

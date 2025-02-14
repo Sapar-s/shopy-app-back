@@ -13,7 +13,11 @@ import {
   getProduct,
   updateProduct,
 } from "../controllers/product-controller";
-import { addProductToBasket } from "../controllers/basket-controller";
+import {
+  addProductToBasket,
+  removeFromCard,
+  viewBasket,
+} from "../controllers/basket-controller";
 
 const userRoute = Router();
 const productRoute = Router();
@@ -33,6 +37,9 @@ productRoute
   .put("/products/:id", updateProduct)
   .delete("/products/:id", deleteProduct);
 
-basketRoute.post("/basket/:id", addProductToBasket);
+basketRoute
+  .post("/basket/:id", addProductToBasket)
+  .get("/basket", viewBasket)
+  .delete("/basket/:id", removeFromCard);
 
 export { userRoute, productRoute, basketRoute };
