@@ -37,6 +37,7 @@ export const register: RequestHandler = (req, res) => {
 };
 
 export const login: RequestHandler = (req, res) => {
+  console.log("login working ", req.body);
   const { email, name, password } = req.body;
   const findUserEmail = users.find(
     (user) => user.email === email && user.password === password
